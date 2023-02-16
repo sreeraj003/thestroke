@@ -1,0 +1,31 @@
+<div class="container bg-light mt-4 p-5">
+    <div class="row">
+        <div class="col-md-3 pt-3" style="border-style:solid ;border-color: black;border-width: 1px;" >
+            <div class="col-12 text-center">
+            <h4 class="text-dark">Hello {{userData.name}}</h4>
+            </div>
+            <div class="col-12 bg-light align-items-center text-center">
+                <h6><a href="/profile" style="color: rgb(129, 0, 139);">My profile</a></h6>
+                <h6><a href="/orders" style="color: black;">My Orders</a></h6>
+                <h6><a href="/address" style="color: black;">My Address</a></h6>
+                <h6><a href="/editProfile" style="color: black;">Edit Profile</a></h6>
+            </div>
+        </div>
+        <div class="col-md-5" style="height: 55.8vh;">
+            <div class="bg-light"  >
+                <h3 class="text-dark"><strong>My Profile</strong></h3>
+                <br>
+                <p class="text-dark">
+                Name : {{userData.name}} <br>
+                Age : {{userData.age}} <br>
+                Email : {{userData.email}} <br>
+                Mobile : {{userData.mobile}} <br>
+                </p>
+            </div>
+            <a href="/logForgetPassword">forgot password?</a>
+        </div>
+        <div class="col-4" >
+            <div class="text-center" style="border-style:solid ;border-color: black;border-width: 1px;"><h4 class="text-dark">Wallet</h4><h5> USD&nbsp;{{userData.wallet}}</h5></div>
+        </div>
+    </div>
+</div>

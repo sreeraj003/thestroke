@@ -1,0 +1,203 @@
+<div class="bg-light  px-4 py-0" style="width:90vw;margin-top: -50px;">
+<button type="button" class="btn btn-success ms-auto" style="float: right;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          Logout
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+          aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Logout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to Logout?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="/admin/logout"><button type="button" class="btn btn-danger">Logout</button></a>
+              </div>
+            </div>
+          </div>
+        </div>
+</div>
+<div class="container-xxl position-relative bg-white d-flex p-0">
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4  mt-5">
+           <nav class=" bg-light" style="width: 300px!important; text-align: center; font-size: 15px;">
+                <a href="index.html" class="navbar-brand">
+                    <h3 class="text-primary">Admin Dashboard</h3>
+                </a>
+                <div class="navbar-nav w-100">
+                    <a href="/admin/dashboard" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <a href="/admin/inventory" class="nav-item nav-link">Inventory</a>
+                    <a href="/admin/order" class="nav-item nav-link">Orders</a>
+                    <a href="/admin/salesreport" class="nav-item nav-link">Sales Report</a>
+                    <a href="/admin/coupons" class="nav-item nav-link">Coupons</a>
+                    <a href="/admin/category" class="nav-item nav-link">Category</a>
+                    <a href="/admin/users" class="nav-item nav-link">users</a>
+                    {{!-- <a href="/admin/returnProd" class="nav-item nav-link">ReturnProduct</a> --}}
+                </div>
+            </nav>
+        </div>
+       
+        <div class="content" style="min-height: 80vh;">
+            <nav class="navbar  bg-light navbar-light sticky-top px-4 py-0 mt-5" style="width: 60vw;">               
+                <div class="ms-auto me-4">
+                    .
+                </div>
+            </nav>
+           
+            <div class="row">
+                <div class="col-md-6">
+                    <canvas id="salesChart" style="width:100%;height: 300px;"></canvas>
+                </div>
+                <div class="col-md-6">
+                    <canvas id="cancelChart" style="width:100%;height: 300px;"></canvas>
+                </div>
+            </div>
+            <div class="mt-2 ms-2">
+            <center>
+                <label for="From">From&nbsp;</label>:&nbsp;<input type="date" id="fromDate">&nbsp;&nbsp;&nbsp;&nbsp;
+                <label for="To">To&nbsp;</label>:&nbsp;<input type="date" id="toDate">
+                <button id="timesearch" class="btn btn-warning m-0 pt-0" style="height: 26px;margin-left: 20px;!important">seach</button>
+                </center>
+            </div>
+             <div class="row">
+                <div class="col-md-6">
+                    <canvas id="searchSalesChart" style="width:100%;height: 300px;"></canvas>
+                </div>
+                <div class="col-md-6">
+                    <canvas id="searchCancelChart" style="width:100%;height: 300px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.0/dist/chart.umd.min.js"></script> 
+    <script>
+        fetch('/admin/sales')
+        .then(response => response.json())
+        .then(data => {    
+            // Step 3: Initialize the chart
+            const ctx = document.getElementById('salesChart')
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data:{
+                    labels:data.category,
+                    datasets:[
+                        {
+                            data:data.count,
+                            label:'Sales',
+
+                        }
+                    ]
+                },
+            });
+            // Step 4: Update the chart
+            chart.update();
+        });        
+    </script>
+    <script>
+        fetch('/admin/sales')
+        .then(response => response.json())
+        .then(data => {    
+            // Step 3: Initialize the chart
+            const canc = document.getElementById('cancelChart')
+            const chart = new Chart(canc, {
+                type: 'bar',
+                data:{
+                    labels:data.category,
+                    datasets:[
+                        {
+                            data:data.cancel,
+                            label:'Sales',
+                            backgroundColor:'rgba(255,0,1,0.6)'
+                        }
+                    ]
+                },
+            });
+            // Step 4: Update the chart
+            chart.update();
+        });        
+    </script>
+    <script>
+        const button = document.getElementById('timesearch')  
+        button.addEventListener("click",function(){
+            const fromDate = document.getElementById('fromDate').value
+            const toDate = document.getElementById('toDate').value
+            console.log(fromDate)
+            console.log(toDate)
+
+            fetch('/admin/timeSearch',{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    from:fromDate,
+                    to:toDate
+                })
+            })
+            .then(response => response.json())
+            .then(data => {    
+                // Step 3: Initialize the chart
+                const searched = document.getElementById('searchSalesChart')
+                const chart = new Chart(searched, {
+                    type: 'bar',
+                    data:{
+                        labels:data.category,
+                        datasets:[
+                            {
+                                data:data.count,
+                                label:'Sales',
+                                
+                            }
+                        ]
+                    },
+                });
+                // Step 4: Update the chart
+                chart.update();
+            });        
+        })
+    </script>
+    <script>
+        const button = document.getElementById('timesearch')
+        button.addEventListener("click",function(){
+        const fromDate = document.getElementById('fromDate').value
+        const toDate = document.getElementById('toDate').value
+        console.log(fromDate)
+        console.log(toDate)
+        fetch('/admin/timeSearch',{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                from:fromDate,
+                to:toDate
+            })
+        })
+        .then(response => response.json())
+        .then(data => {    
+            // Step 3: Initialize the chart
+            const searchedcanc = document.getElementById('searchCancelChart')
+            const chart = new Chart(searchedcanc, {
+                type: 'bar',
+                data:{
+                    labels:data.category,
+                    datasets:[
+                        {
+                            data:data.cancel,
+                            label:'Sales',
+                            
+                        }
+                    ]
+                },
+            });
+            // Step 4: Update the chart
+            chart.update();
+        });        
+        })
+    </script>

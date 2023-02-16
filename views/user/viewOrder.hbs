@@ -1,0 +1,155 @@
+<div class="container" >
+    <div class="row">
+        <div class="col-md-3">
+            <div class="col-12 text-center">
+            <h4>Hello <h4 id="userName">{{userData.name}}</h4></h4>
+            </div>
+            <div class="col-12 bg-light align-items-center text-center">
+                <a href="/profile" style="color: rgb(129, 0, 139);">My profile</a><br>
+                <a href="/orders" style="color: black;">My Orders</a><br>
+                <a href="/address" style="color: black;">My Address</a><br>
+                <a href="/editProfile" style="color: black;">Edit Profile</a><br>
+            </div>
+        </div>
+        <div class="col-md-9 text-dark p-5" id="invoice" style="border: 1px;border-style: solid;">
+            <b> Date of order:</b>{{orderData.date}} <br>
+            <b>Order Id:</b>{{orderData._id}} <br>
+            <b>Name:</b>{{orderData.user}} <br>
+            <b>Delivery Address:</b><p id="userAddress">{{orderData.address}}</p> <br>
+            <b>Payment Method:</b>{{orderData.payment}} <br>
+            <b>Status:</b>{{#if orderData.is_rejected}}<p class="text-danger">Cancelled</p>{{else}}<p class="text-success">{{orderData.status}}</p>{{/if}} <br>
+            <b>{{#if returnData}}Return Status &nbsp; <br> {{#each returnData}}{{#each item}}{{this.name}}:{{../returnStatus}}{{/each}}{{/each}}{{/if}}</b><br><br>
+            <div style="color: red;" id="message"></div>
+            <b>Purchased products</b> <br>
+            <table style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Items</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Amount</th>
+                        {{!-- <th>Action</th> --}}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="prodId">{{#each orderData.product}}{{this.name}}&nbsp;{{this.category}} <br>  {{/each}}</td>
+                        <td id="proqty">{{#each orderData.quantity}}{{this}} <br> {{/each}}</td>
+                        <td id="proPrice">{{#each orderData.price}}{{this}} <br> {{/each}}</td>
+                        <td id="proamount">{{#each orderData.amount}}{{this}} <br> {{/each}}</td>
+                        {{!-- <td>{{#each orderData.product}}{{#if ../orderData.is_rejected}}Rejected order{{else}}
+                             <button id="rtrnBtn" type="button" class="btn btn-success mx-auto mt-2 " onclick="returnOrderData('{{_id}}','{{../orderData._id}}')" data-bs-toggle="modal" data-bs-target="#Reject">Return</button><br><br>
+                            {{/if}}{{/each}}</td> --}}
+                    </tr>
+                </tbody>
+            </table>
+            <div class="">
+                Total cost in cart : USD <strong id="tot"></strong><br>
+                Tax(18%)           : USD <strong id="tax">{{orderData.tax}}</strong><br>
+                Applied coupon     : <strong id="coupon">{{orderData.coupon}}</strong><br>
+                {{#if orderData.coupon}}
+                coupon discount    : USD <strong id="dis">{{orderData.discount}}</strong><br>
+                Total Paid         : USD <strong id="paid">{{orderData.total}}</strong><br>
+                {{else}}
+                Total Paid         : USD <strong id="paid">{{orderData.total}}</strong><br>
+                {{/if}}
+                <button class="btn btn-info" id="download">Download invoice</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+ <div class="modal fade mt-5" style="margin-top: 200px!important;" id="Reject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Return</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Why do you wan't to return the product?<br>
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                    <label for="floatingTextarea2">Reason for return</label>
+                </div>
+                <input type="hidden" id="return_id">
+                <input type="hidden" id="order_id">
+                <input type="hidden" id="tax" value="orderData">
+            </div>
+            <input type="hidden" id="userName" value={{userData.name}}>
+            <input type="hidden" id="userAddress" value="{{userData}}">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-danger mt-1 mb-1" data-id="{{_id}}"  onclick=" confirmCancel()" id="reject-Button" >Return</button>                             
+            </div>
+        </div>
+    </div>
+ </div>
+
+<script>
+    window.onload=(()=>{
+        console.log('1')
+        console.log(document.getElementById('coupon').innerHTML)
+        console.log(typeof(document.getElementById('coupon').innerHTML))
+    if(document.getElementById('coupon').innerHTML !=''){
+    document.getElementById('tot').innerHTML = parseInt(document.getElementById('dis').innerHTML)+parseInt(document.getElementById('paid').innerHTML)-parseInt(document.getElementById('tax').innerHTML)
+    console.log(document.getElementById('tot').innerHTML)
+    }else{
+        document.getElementById('tot').innerHTML = parseInt(document.getElementById('paid').innerHTML)-parseInt(document.getElementById('tax').innerHTML)
+    }
+   document.getElementById("download").addEventListener("click",()=>{
+            const invoice = document.getElementById('invoice');
+            document.getElementById('download').style.display = "none" 
+            var opt = {
+                margin:       1,
+                filename:     'invoice.pdf',
+                image:        { type: 'jpeg', quality:1 },
+                html2canvas:  { scale:3},
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
+            html2pdf(invoice,opt)
+            document.getElementById('download').style.display = "block" 
+
+        })
+    })
+    
+
+</script>
+
+<script>
+    function returnOrderData(data,order){
+        document.getElementById('return_id').value = data
+    document.getElementById('order_id').value = order
+    }
+    async function confirmCancel() {
+    const id = document.getElementById('return_id').value
+    const order_id = document.getElementById('order_id').value
+    const reason = document.getElementById('floatingTextarea2').value
+    console.log(reason)
+    let response = await fetch("/returnOrder", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id: id,
+        reason:reason,
+        order_id:order_id
+      })
+    })
+     let result = await response.json()
+
+        if(result == 'requested'){
+            location.reload()
+        }else if(result=='Exist'){
+             $('#Reject').modal('hide')
+            document.getElementById('message').innerHTML = `You can't return this product`
+        }else{          
+            document.getElementById('message').style.color = 'red'
+            document.getElementById('message').innerHTML = 'something went wrong...!'
+        }
+    }
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>

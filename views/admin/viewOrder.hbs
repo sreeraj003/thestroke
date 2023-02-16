@@ -1,0 +1,100 @@
+ <div class="bg-light  px-4 py-0" style="width:90vw;margin-top: -50px;">
+    <button type="button" class="btn btn-success ms-auto" style="float: right;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          Logout
+    </button>
+
+        <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Logout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to Logout?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="/admin/logout"><button type="button" class="btn btn-danger">Logout</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-xxl position-relative bg-white d-flex p-0" style="height: 80vh;">
+        <!-- Sidebar Start -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="sidebar pe-4 pb-1 mt-5">
+                    <nav class=" bg-light" style="width: 300px!important; text-align: center; font-size: 15px;">
+                        <h3 class="text-primary">Inventory</h3>
+                        <div class="navbar-nav w-100">
+                            <a href="/admin/dashboard" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                            <a href="/admin/inventory" class="nav-item nav-link">Inventory</a>
+                            <a href="/admin/order" class="nav-item nav-link">Orders</a>
+                            <a href="/admin/salesreport" class="nav-item nav-link">Sales Report</a>
+                            <a href="/admin/coupons" class="nav-item nav-link">Coupons</a>
+                            <a href="/admin/category" class="nav-item nav-link">Categories</a>
+                            <a href="/admin/users" class="nav-item nav-link">users</a> 
+                            {{!-- <a href="/admin/returnProd" class="nav-item nav-link">ReturnProduct</a> --}}
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-md-9 text-dark p-5" id="invoice" style="border: 1px;border-style: solid;">
+            <b> Date of order:</b>{{orderData.date}} <br>
+            <b>Name:</b>{{orderData.user}} <br>
+            <b>Delivery Address:</b><p id="userAddress">{{orderData.address}}</p> <br>
+            <b>Payment Method:</b>{{orderData.payment}} <br>
+            <b>Status:</b>{{#if orderData.is_rejected}}<p class="text-danger">Cancelled</p>{{else}}<p class="text-success">{{orderData.status}}</p>{{/if}} <br>
+            <b>{{#if returnData}}Return Status &nbsp; <br> {{#each returnData}}{{#each item}}{{this.name}}:{{../returnStatus}}{{/each}}{{/each}}{{/if}}</b>
+            <div style="color: red;" id="message"></div>
+            <b>Purchased products</b> <br>
+            <table style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Items</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="prodId">{{#each orderData.product}}{{this.name}}&nbsp;{{this.category}} <br>  {{/each}}</td>
+                        <td id="proqty">{{#each orderData.quantity}}{{this}} <br> {{/each}}</td>
+                        <td id="proPrice">{{#each orderData.price}}{{this}} <br> {{/each}}</td>
+                        <td id="proamount">{{#each orderData.amount}}{{this}} <br> {{/each}}</td>
+                    </tr>
+                </tbody>
+            </table><br><br>
+            <div class="">
+                Total cost in cart : USD <strong id="tot"></strong><br>
+                Tax(18%)           : USD <strong id="tax">{{orderData.tax}}</strong><br>
+                Applied coupon     : <strong id="coupon">{{orderData.coupon}}</strong><br>
+                {{#if orderData.coupon}}
+                coupon discount    : USD <strong id="dis">{{orderData.discount}}</strong><br>
+                Total Paid         : USD <strong id="paid">{{orderData.total}}</strong><br>
+                {{else}}
+                Total Paid         : USD <strong id="paid">{{orderData.total}}</strong><br>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</div><script>
+    window.onload=(()=>{
+        console.log('1')
+        console.log(document.getElementById('coupon').innerHTML)
+        console.log(typeof(document.getElementById('coupon').innerHTML))
+    if(document.getElementById('coupon').innerHTML !=''){
+    document.getElementById('tot').innerHTML = parseInt(document.getElementById('dis').innerHTML)+parseInt(document.getElementById('paid').innerHTML)-parseInt(document.getElementById('tax').innerHTML)
+    console.log(document.getElementById('tot').innerHTML)
+    }else{
+        document.getElementById('tot').innerHTML = parseInt(document.getElementById('paid').innerHTML)-parseInt(document.getElementById('tax').innerHTML)
+    }
+    })
+    
+
+</script>

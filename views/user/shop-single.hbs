@@ -1,0 +1,168 @@
+
+  <div class="site-wrap">
+    <div class="bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mb-0"><span class="mx-2 mb-0">Shop/</span> <strong class="text-black">{{Item.name}}</strong></div>
+        </div>
+      </div>
+    </div>  
+    <div class="site-section" style="background-color: rgb(236, 234, 254);">
+      <div class="container bg-light">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="text-center col-12 zoom-image" data-image="/{{Item.image.[0]}}">
+                <img class="col-12" id="main-image" src="/{{Item.image.[0]}} " width="400px" height="400px"> 
+            </div>
+               
+              <div class=" mt-1 g-1" style="flex-direction: row!important;display: inline-flex;">\
+                {{#each Item.image}}
+                <img width="80px;" onclick="change_image(this)" height="60px" src="/{{this}}" alt="">
+                {{/each}}
+              </div>
+                    
+          </div>
+          <div class="col-md-6 bg-light p-5" style="border-style:solid ;border-color: black;border-width: 1px;">
+            <h2 class="text-black">{{Item.name}} {{Item.brand}}</h2>
+            <p>{{Item.description}}</p>
+            <p><strong class="text-primary h4">USD.{{Item.price}}</strong></p>
+           
+            <div class="mb-5 ">
+              <form id="formId" action="/addcartitem" method="post">      
+                <input class="mb-1"type="button" onclick="decrementValue()" value="-" />
+                <input class="mb-1 text-center" name="count" type="number" name="quantity" value="1" maxlength="2" max="10" size="1" id="number">
+                <input class="mb-1"type="button" onclick="incrementValue()" value="+" />
+                <input type="hidden" name="item_id" id="item_id" value="{{Item._id}}">
+                <br>
+                <button class=" btn btn-sm btn-success" id="addToCart" >Add to cart</button>&nbsp;</p>
+              </form>
+                <button class=" btn btn-sm btn-primary" onclick="wishlist('{{Item._id}}')">Add to wishlist</button></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{!-- <div class="site-section block-3 site-blocks-2 bg-light">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-7 site-section-heading text-center pt-4">
+            <h2>Featured Products</h2>
+          </div>
+        </div>
+    </div> --}}
+  </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-zoom/1.7.21/jquery.zoom.min.js"></script>
+<script>
+  function incrementValue()
+  {
+      var value = parseInt(document.getElementById('number').value, 10);
+      value = isNaN(value) ? 0 : value;
+      if(value<10){
+          value++;
+              document.getElementById('number').value = value;
+      }
+  }
+  function decrementValue()
+  {
+      var value = parseInt(document.getElementById('number').value, 10);
+      value = isNaN(value) ? 0 : value;
+      if(value>1){
+          value--;
+              document.getElementById('number').value = value;
+      }
+
+  }
+</script>
+<script>
+  $('#addToCart').click(function(){
+
+    const count = document.getElementById('number').value
+    const item_id = document.getElementById('item_id').value
+    $.ajax({
+      type:'POST',
+      url:'/addcartitem',
+      contentType:'application/json',
+      data:{
+        count: count,
+        item_id: item_id
+      },
+      success:function(data){
+
+      },
+      error:function(error){
+      console.log(error)
+    }
+  })
+
+});
+</script>
+
+<script>
+function change_image(image){
+  document.getElementById("main-image").src = image.src;
+}
+  document.addEventListener("DOMContentLoaded", function(event) {
+    });
+        jQuery(document).ready(function ($) {
+          $('.zoom-image img').click(function (event) {
+            var ix = $(this).offset().left;
+            var iy = $(this).offset().top;
+            console.log(ix + '-' + iy);
+            var mx = event.pageX;
+            var my = event.pageY;
+            console.log(mx + '-' + my);
+          })
+          $('.zoom-image img').hover(function () {
+            var img = $(this).attr('src');
+          $(this).after("<div class='hover-image' style='background-image: url(" + img + "); background-size: 300px;'></div>");
+          $(this).mousemove(function (event) {
+          // Mouse Position
+            var mx = event.pageX;
+            var my = event.pageY;
+          // Image Position
+            var ix = $(this).offset().left;
+            var iy = $(this).offset().top;
+          // Mouse Position Relavtive to Image
+            var x = mx - (ix);
+            var y = my - (iy);
+          // Image Height and Width
+            var w = $(this).width();
+            var h = $(this).height();
+          // Mouse Position Relative to Image, in %
+            var xp = (-x / w) * -100;
+            var yp = (-y / h) * -100;
+          $(this).parent().find('.hover-image').attr('style',
+            "background-image: url(" + img + "); background-size: 1000px; background-repeat: no-repeat; background-position: " + xp + "% " + yp + "%; top: " + y + "px; left: " + x + "px;");
+        });
+      }, function () {
+    $(this).parent().find('.hover-image').remove();
+  });
+});
+
+</script>
+<script>
+  function wishlist(data){
+    const id = data
+    fetch("/addwishlistitem", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id: id
+      })
+    })
+    .then(response => {
+        response.json
+        })
+    .then(data=>{
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
+</script>
+
+  </body>
+</html>
