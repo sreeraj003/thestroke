@@ -23,20 +23,27 @@
                     
           </div>
           <div class="col-md-6 bg-light p-5" style="border-style:solid ;border-color: black;border-width: 1px;">
-            <h2 class="text-black">{{Item.name}} {{Item.brand}}</h2>
-            <p>{{Item.description}}</p>
-            <p><strong class="text-primary h4">USD.{{Item.price}}</strong></p>
-           
-            <div class="mb-5 ">
-              <form id="formId" action="/addcartitem" method="post">      
-                <input class="mb-1"type="button" onclick="decrementValue()" value="-" />
-                <input class="mb-1 text-center" name="count" type="number" name="quantity" value="1" maxlength="2" max="10" size="1" id="number">
-                <input class="mb-1"type="button" onclick="incrementValue()" value="+" />
-                <input type="hidden" name="item_id" id="item_id" value="{{Item._id}}">
-                <br>
-                <button class=" btn btn-sm btn-success" id="addToCart" >Add to cart</button>&nbsp;</p>
-              </form>
-                <button class=" btn btn-sm btn-primary" onclick="wishlist('{{Item._id}}')">Add to wishlist</button></a>
+            <div class="row">
+              <div class="col-md-6">
+                <h2 class="text-black">{{Item.name}} {{Item.brand}}</h2>
+                <p><strong class="text-primary h4">USD.{{Item.price}}</strong></p>
+              
+                <div class="mb-5 ">
+                  <form id="formId" action="/addcartitem" method="post">      
+                    <input class="mb-1 p-0 btn btn-primary" type="button" onclick="decrementValue()" style="height: 32px;width: 30px;" value="-" />
+                    <input class="mb-1 text-center" name="count" type="number" name="quantity"  style="width: 100px;" value="1" maxlength="2" max="10" size="1" id="number">
+                    <input class="mb-1 btn btn-primary p-0"type="button" onclick="incrementValue()" style="height: 32px;width: 30px;" value="+" />
+                    <input type="hidden" name="item_id" id="item_id" value="{{Item._id}}">
+                    <br>
+                    <button class=" btn btn-sm btn-success" id="addToCart" >Add to cart</button>&nbsp;</p>
+                  </form>
+                    <button class=" btn btn-sm btn-primary" onclick="wishlist('{{Item._id}}')">Add to wishlist</button></a>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <h5 class="text-dark">Description</h5>
+                <p>{{Item.description}}</p>
+              </div>
             </div>
           </div>
         </div>
