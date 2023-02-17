@@ -20,7 +20,7 @@ user_route.engine('hbs', hbs.engine({
 
 user_route.use(session.checkSession)
 
-cron.schedule("* * * * *", async () => {
+cron.schedule("* * * * * ", async () => {
   const expiredCoupons = await Coupon.find({ expire: { $lt: new Date() } });
   await Coupon.updateMany({ _id: { $in: expiredCoupons.map((c) => c._id) } }, { $set: { is_valid: false } });
 });

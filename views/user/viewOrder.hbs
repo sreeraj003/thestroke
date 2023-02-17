@@ -1,17 +1,6 @@
-<div class="container" >
+<div class="container bg-light p-5 mt-4" >
     <div class="row">
-        <div class="col-md-3">
-            <div class="col-12 text-center">
-            <h4>Hello <h4 id="userName">{{userData.name}}</h4></h4>
-            </div>
-            <div class="col-12 bg-light align-items-center text-center">
-                <a href="/profile" style="color: rgb(129, 0, 139);">My profile</a><br>
-                <a href="/orders" style="color: black;">My Orders</a><br>
-                <a href="/address" style="color: black;">My Address</a><br>
-                <a href="/editProfile" style="color: black;">Edit Profile</a><br>
-            </div>
-        </div>
-        <div class="col-md-9 text-dark p-5" id="invoice" style="border: 1px;border-style: solid;">
+        <div class="col-md-12 text-dark p-5" id="invoice" style="border: 1px;border-style: solid;">
             <b> Date of order:</b>{{orderData.date}} <br>
             <b>Order Id:</b>{{orderData._id}} <br>
             <b>Name:</b>{{orderData.user}} <br>
