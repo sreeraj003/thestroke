@@ -62,8 +62,8 @@ user_route.put('/cancelOrder',auth.isUserLogin,userController.cancelOrder)
 user_route.get('/viewOrder',auth.isUserLogin,userController.viewOrder)
 user_route.put('/increaseCartCount',auth.isUserLogin,userController.increaseCartCount)
 user_route.put('/decreaseCartCount',auth.isUserLogin,userController.decreaseCartCount)
-user_route.get('/categorySearch',auth.isUserLogin,userController.searchCategory)
-user_route.post('/searchProduct',auth.isUserLogin,userController.searchProduct)
+user_route.get('/categorySearch',userController.searchCategory)
+user_route.post('/searchProduct',userController.searchProduct)
 user_route.post('/checkCoupon',auth.isUserLogin,userController.checkCoupon)
 
 

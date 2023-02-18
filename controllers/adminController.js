@@ -549,7 +549,7 @@ const timeSearch = async(req,res,next)=>{
 const loadSalesReport = async(req,res,next)=>{
     try {
         
-        const salesData = await Order.find({is_rejected:0}).lean()        
+        const salesData = await Order.find({is_rejected:0}).sort({date:1}).lean()        
         const groupedData = {};
         const gross = 0
         salesData.forEach(item => {

@@ -41,6 +41,10 @@
                         </tr>
                         {{/each}}
                         <tr>
+                            <td colspan="2"><strong id="coupon">Coupon discount</strong></td>
+                            <td><strong><b>USD.<b id="discount"></b>0</b></strong></td>
+                        </tr>
+                        <tr>
                             <td colspan="2"><strong>Total</strong></td>
                             <td><Strong><b>USD.<b id="totaldisp">{{total.[0].total}}</b></b></Strong></td>
                         </tr>
@@ -82,10 +86,11 @@
             document.getElementById('message').style.color = 'red'
             document.getElementById('message').innerHTML = 'Invalid coupon...!'
         }else{
-
+            console.log(result)
             document.getElementById('message').style.color = 'green'
             document.getElementById('message').innerHTML = 'Coupon added successfully...!'
-            document.getElementById('totaldisp').innerHTML = result
+            document.getElementById('totaldisp').innerHTML = result[0]
+            document.getElementById('discount').innerHTML = result[1]
         }
     }
 </script>
