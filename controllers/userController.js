@@ -938,7 +938,7 @@ const checkCoupon = async(req,res,next)=>{
         const checkUsed = coup.findIndex((x)=>{return x == req.body.code})
         if (checkUsed==-1) {
           const CouponDiscount = await Coupon.findOne({code:code}).lean()
-          const discounted = [total-(total*CouponDiscount.discount/100),total*CouponDiscount.discount/100]
+          const discounted = [total-(total*CouponDiscount.discount/100)]
           res.json(discounted)
           }else{
             res.json('invalid')
