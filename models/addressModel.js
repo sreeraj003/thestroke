@@ -5,6 +5,7 @@ const addressSchema = mongoose.Schema({
         type:String,
         required:true
     },
+    
     house_no:{
         type:String,
         required:true
