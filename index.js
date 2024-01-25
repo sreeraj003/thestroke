@@ -22,6 +22,6 @@ app.use('/admin',adminRoute)
 app.use('/',userRoute);
 
 
-app.listen(3000,function(){
+app.listen(1000,function(){
     console.log("server connected");
 })
