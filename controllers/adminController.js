@@ -35,9 +35,10 @@ const verifyLogin = async(req,res,next)=>{
     try {
         const Email = req.body.email
         const Password = req.body.password
-        const adminData = await Admin.findOne({email:Email}) 
+        const adminData = await Admin.findOne({email:Email})
         if (adminData) {
             const passwordMatch = await bcrypt.compare(Password,adminData.password)
+            console.log(passwordMatch);
             if (passwordMatch) {
                 req.session.admin = adminData
                 req.session.admin_id = adminData._id
