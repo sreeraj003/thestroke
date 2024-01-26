@@ -76,7 +76,7 @@ const sendVerifyMail = async (name, email, token,next) => {
       html:
         "<p>hii " +
         name +
-        ',Please click here to <a href="http://thestroke.shop/verify?token=' +
+        ',Please click here to <a href="https://thestroke.onrender.com/verify?token=' +
         token +
         '">verify</a> your mail.</p> ',
     };
