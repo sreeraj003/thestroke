@@ -1,11 +1,8 @@
- <div class="bg-light  px-4 py-0" style="width:90vw;margin-top: -50px;">
+<div class="bg-light  px-4 py-0" style="width:90vw;margin-top: -50px;">
     <button type="button" class="btn btn-success ms-auto" style="float: right;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-          Logout
+        Logout
     </button>
-
-        <!-- Modal -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -23,7 +20,7 @@
         </div>
     </div>
 </div>
-<div class="container-xxl position-relative bg-white d-flex p-0" style="height: 80vh;">
+<div class="container-xxl position-relative bg-white d-flex p-0" style="Hight: 80vh;">
         <!-- Sidebar Start -->
         <div class="row">
             <div class="col-md-3">
@@ -43,7 +40,8 @@
                     </nav>
                 </div>
             </div>
-            <div class="col-md-9 text-dark p-5" id="invoice" style="border: 1px;border-style: solid;">
+    </div>
+            <div class="col-md-9 text-dark mt-5  p-2" id="invoice" style="border: 1px;border-style: solid;">
             <b> Date of order:</b>{{orderData.date}} <br>
             <b>Name:</b>{{orderData.user}} <br>
             <b>Delivery Address:</b><p id="userAddress">{{orderData.address}}</p> <br>
@@ -82,7 +80,6 @@
                 {{/if}}
             </div>
         </div>
-    </div>
 </div><script>
     window.onload=(()=>{
         console.log('1')

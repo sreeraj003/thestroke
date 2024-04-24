@@ -76,7 +76,7 @@ const sendVerifyMail = async (name, email, token,next) => {
       html:
         "<p>hii " +
         name +
-        ',Please click here to <a href="https://thestroke.onrender.com/verify?token=' +
+        ',Please click here to <a href="https://thestroke.onrender.com.com/verify?token=' +
         token +
         '">verify</a> your mail.</p> ',
     };
@@ -307,7 +307,7 @@ const sendRestpasswordMail = async (name, email, token,next) => {
         html:
           "<p>hii " +
           name +
-          ',Please click here to <a href="http://localhost:3000/forgetPassword?token=' +
+          ',Please click here to <a href="https://thestroke.onrender.com/forgetPassword?token=' +
           token +
           '">reset</a> your password.</p> ',
       };
